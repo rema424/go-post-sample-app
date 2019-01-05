@@ -1,0 +1,15 @@
+{
+  "go.gopath": "${workspaceFolder}",
+  "go.formatTool": "gofmt",
+  "prettier.disableLanguages": ["vue", "html"],
+  "material-icon-theme.folders.associations": {
+    "handler": "Routes",
+    "usecase": "Functions",
+    "entity": "Upload",
+    "dto": "Generator",
+    "view": "Download",
+    "pkg": "Packages",
+    "asset": "Public"
+  },
+  "go.goroot": "/usr/local/go"
+}

@@ -1,0 +1,14 @@
+version: '3'
+services:
+  app:
+    build: .
+    working_dir: /go/src/app
+    command: go run main.go
+    # command: dlv debug --headless --listen=:2345 --api-version=2
+    volumes:
+      - ./src/app:/go/src/app
+    ports:
+      - 8080:8080 # AppEngine default
+      - 2345:2345 # Debug
+    tty: true
+    privileged: true
