@@ -18,4 +18,5 @@ WORKDIR /go/src
 # RUN dep ensure
 
 EXPOSE 8080
+EXPOSE 2345
 CMD ["go", "run", "main.go"]
