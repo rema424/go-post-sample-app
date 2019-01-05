@@ -29,9 +29,15 @@ func main() {
 	// Echo instance
 	e := echo.New()
 
+	// Debug mode
+	e.Debug = true
+
 	// Middleware
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
+
+	// Static assets
+	e.Static("/static", "asset")
 
 	// Templates
 	templates := make(map[string]*template.Template)
