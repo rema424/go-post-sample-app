@@ -19,7 +19,18 @@
 
 <body>
   <div class="container">
-    {{ template "content" . }}
+    <h1>MySite</h1>
+    <section>
+      {{ template "content" . }}
+    </section>
+    <section>
+      <h2>Debug</h2>
+      <ul>
+        {{ range $k, $v := . }}
+        <li>{{$k}}: {{debugPrint $v}}</li>
+        {{ end }}
+      </ul>
+    </section>
   </div><!-- /container -->
 
   <!-- Layout JavaScript -->
