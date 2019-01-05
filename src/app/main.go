@@ -43,13 +43,15 @@ func main() {
 
 	// Templates
 	templates := make(map[string]*template.Template)
-	templates["hello"] = registerTemplate("hello")
+	templates["hello"] = registerTemplate("layout", "hello")
+	templates["howdy"] = registerTemplate("layout", "howdy")
 
 	// Renerer
 	e.Renderer = &TemplateRegistry{Templates: templates}
 
 	// Route => handler
 	e.GET("/", helloHandler)
+	e.GET("/howdy", howdyHandler)
 
 	// Start server
 	e.Logger.Fatal(e.Start(":8080"))
@@ -60,9 +62,18 @@ func main() {
 // ---------
 func helloHandler(c echo.Context) error {
 	data := map[string]interface{}{
-		"now": time.Now().Format(time.RFC3339),
+		"title": "Hello",
+		"now":   time.Now().Format(time.RFC3339),
 	}
 	return c.Render(http.StatusOK, "hello", data)
+}
+
+func howdyHandler(c echo.Context) error {
+	data := map[string]interface{}{
+		"title": "Howdy",
+		"now":   time.Now().Format(time.RFC3339),
+	}
+	return c.Render(http.StatusOK, "howdy", data)
 }
 
 // -------
@@ -82,7 +93,7 @@ func (tr *TemplateRegistry) Render(w io.Writer, name string, data interface{}, c
 		value["reverse"] = c.Echo().Reverse
 	}
 
-	return t.ExecuteTemplate(w, name, data)
+	return t.ExecuteTemplate(w, "layout", data)
 }
 
 // ------
