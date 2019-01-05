@@ -9,9 +9,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
   <title>{{ .title }}</title>
 
-  <!-- CSS -->
+  <!-- Reset CSS -->
   <link rel="stylesheet" href="https://unpkg.com/ress/dist/ress.min.css">
+  <!-- Layout CSS -->
   <link rel="stylesheet" href="/static/css/main.css" />
+  <!-- Content CSS -->
+  {{ template "css" }}
 </head>
 
 <body>
@@ -19,8 +22,10 @@
     {{ template "content" . }}
   </div><!-- /container -->
 
-  <!-- JavaScript -->
+  <!-- Layout JavaScript -->
   <script src="/static/js/main.js"></script>
+  <!-- Content JavaScript -->
+  {{ template "js" }}
 </body>
 
 </html>
