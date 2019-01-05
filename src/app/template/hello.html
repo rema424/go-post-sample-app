@@ -1,5 +1,16 @@
+{{ define "css" }}
+<link rel="stylesheet" href="/static/css/hello.css" />
+{{ end }}
+
+
+
 {{ define "content" }}
 
 <p>Hello, World! {{ .now }}</p>
 
+{{ end }}
+
+
+{{ define "js" }}
+<script src="/static/js/hello.js"></script>
 {{ end }}
