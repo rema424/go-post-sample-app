@@ -21,3 +21,5 @@ gin-bin
 github.com
 golang.org
 gopkg.in
+service-account-key.json
+index.yaml

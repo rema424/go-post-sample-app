@@ -9,7 +9,8 @@
     "dto": "Generator",
     "view": "Download",
     "pkg": "Packages",
-    "asset": "Public"
+    "asset": "Public",
+    "gcloud": "Docker"
   },
   "go.goroot": "/usr/local/go"
 }

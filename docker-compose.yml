@@ -15,3 +15,17 @@ services:
       - 2345:2345 # Debug
     tty: true
     privileged: true
+  gcloud:
+    build: gcloud
+    working_dir: /go/src/app/server
+    # command: bash --login
+    command: dev_appserver.py app.yaml --host 0.0.0.0
+    # command: gcloud auth activate-service-account --key-file /tmp/service-account-key.json
+    volumes:
+      - ./src/app:/go/src/app
+      - ./gcloud/service-account-key.json:/tmp/service-account-key.json
+    ports:
+      - 8000:8000
+      - 8080:8080
+    tty: true
+    privileged: true
