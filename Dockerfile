@@ -13,8 +13,8 @@ RUN mkdir -p /go/src/app && \
   : 'realize start --no-config --run' && \
   go get -u -v github.com/oxequa/realize
 
-ADD src /go/src
-WORKDIR /go/src
+ADD src /go/src/app
+WORKDIR /go/src/app
 # RUN dep ensure
 
 EXPOSE 8080
