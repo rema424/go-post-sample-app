@@ -1,22 +1,32 @@
-FROM golang:1.11
+FROM golang:1.11 AS golang
+FROM google/cloud-sdk:latest
 
-RUN mkdir -p /go/src/app && \
-  : 'パッケージ管理' && \
-  go get -u -v github.com/golang/dep/cmd/dep && \
-  : 'デバッガー' && \
-  go get -u -v github.com/derekparker/delve/cmd/dlv && \
-  : 'ホットリロード' && \
-  : 'fresh' && \
-  go get -u -v github.com/pilu/fresh && \
-  : 'gin -p 3000 -a 8080 run main.go' && \
-  go get -u -v github.com/codegangsta/gin && \
-  : 'realize start --no-config --run' && \
-  go get -u -v github.com/oxequa/realize
+# golang multi-stage build
+COPY --from=golang /usr/local/go /usr/local/go
+COPY --from=golang /usr/bin/make /usr/local/bin/
+ADD ./gcloud/service-account-key.json /tmp/service-account-key.json
 
-ADD src /go/src/app
+# GOPATH設定
+RUN mkdir -p /go/src/app
+ENV GOPATH /go
+
+# go PATH設定
+ENV PATH $PATH:/usr/local/go/bin:/go/bin
+
+# goappコマンドにPATHを通す
+ENV PATH $PATH:/usr/lib/google-cloud-sdk/platform/google_appengine
+
+# ソースコードのマウント
+ADD ./src/app /go/src/app
 WORKDIR /go/src/app
-# RUN dep ensure
 
+RUN chmod +x /usr/lib/google-cloud-sdk/platform/google_appengine/goapp && \
+  curl -sL https://deb.nodesource.com/setup_10.x | bash - && \
+  apt-get install -y nodejs && \
+  # go get -u -v github.com/golang/dep/cmd/dep && \
+  # dep ensure && \
+  echo "gcloud auth activate-service-account --key-file /tmp/service-account-key.json" >> /root/.bashrc
+
+# ポート解放
+EXPOSE 8000
 EXPOSE 8080
-EXPOSE 2345
-CMD ["go", "run", "main.go"]
