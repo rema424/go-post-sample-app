@@ -1,13 +1,19 @@
 version: '3'
+
+volumes:
+  go-post-volume:
+    external: true
+
 services:
   app:
     build: .
-    working_dir: /go/src/app
+    working_dir: /go/src/app/main
     command: bash
-    # command: go run main.go
+    # command: go build && ./main
     # command: dlv debug --headless --listen=:2345 --api-version=2
     volumes:
-      - ./src/app:/go/src/app
+      # - ./src/app:/go/src/app
+      - go-post-volume:/go/src/app
     environment:
       TZ: Asia/Tokyo
     ports:
@@ -17,12 +23,13 @@ services:
     privileged: true
   gcloud:
     build: gcloud
-    working_dir: /go/src/app/server
+    working_dir: /go/src/app/main
     # command: bash --login
     command: dev_appserver.py app.yaml --host 0.0.0.0
     # command: gcloud auth activate-service-account --key-file /tmp/service-account-key.json
     volumes:
-      - ./src/app:/go/src/app
+      # - ./src/app:/go/src/app
+      - go-post-volume:/go/src/app
       - ./gcloud/service-account-key.json:/tmp/service-account-key.json
     ports:
       - 8000:8000
