@@ -1,6 +1,7 @@
 version: '3'
 
 volumes:
+  cloudsql:
   go-post-volume:
     external: true
 
@@ -22,3 +23,15 @@ services:
       - 2345:2345 # Debug
     tty: true
     privileged: true
+  db:
+    image: gcr.io/cloudsql-docker/gce-proxy:1.12
+    volumes:
+      - ./cloudsql/cloudsql-key-config.json:/config/cloudsql-key-config.json
+      - cloudsql:/cloudsql
+    command: [
+      "/cloud_sql_proxy",
+      "-instances=go-post-sample-app:asia-northeast1:go-post-cloudsql-dev=tcp:0.0.0.0:3306",
+      "-credential_file=/config/cloudsql-key-config.json"
+    ]
+    ports:
+      - 127.0.0.1:3306:3306
