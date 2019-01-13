@@ -10,7 +10,8 @@
     "view": "Download",
     "pkg": "Packages",
     "asset": "Public",
-    "gcloud": "Docker"
+    "gcloud": "Docker",
+    "main": "Serverless"
   },
   "go.goroot": "/usr/local/go"
 }
