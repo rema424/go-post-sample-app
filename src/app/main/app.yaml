@@ -5,3 +5,6 @@ handlers:
   # All URLs are handled by the Go application script
   - url: /.*
     script: _go_app
+inbound_services:
+  # 徐々にトラフィックを移行するためにwarmupを有効にする
+  - warmup

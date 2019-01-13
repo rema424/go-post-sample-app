@@ -8,7 +8,7 @@ volumes:
 services:
   app:
     build: .
-    working_dir: /go/src/app/main
+    working_dir: /go/src/app
     command: bash --login
     # command: dev_appserver.py app.yaml --host 0.0.0.0
     # command: go build && ./main
