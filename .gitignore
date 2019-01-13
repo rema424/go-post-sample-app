@@ -24,3 +24,4 @@ gopkg.in
 service-account-key.json
 index.yaml
 .docker-sync
+cloudsql-key-config.json
