@@ -22,13 +22,15 @@ WORKDIR /go/src/app
 
 RUN chmod +x /usr/lib/google-cloud-sdk/platform/google_appengine/goapp && \
   chmod +x /usr/lib/google-cloud-sdk/platform/google_appengine/appcfg.py && \
+  bash -c "$(curl -fSl https://raw.githubusercontent.com/CircleCI-Public/circleci-cli/master/install.sh)" && \
+  circleci update && \
   # curl -sL https://deb.nodesource.com/setup_10.x | bash - && \
   # apt-get install -y nodejs && \
   # go get -u -v github.com/golang/dep/cmd/dep && \
   # dep ensure && \
   echo "gcloud auth activate-service-account --key-file /tmp/service-account-key.json" >> /root/.bashrc && \
-  echo 'export PROJECT_ID=$(gcloud config get-value account | cut -d "@" -f 2 | cut -d "." -f 1)' >> /root/.bashrc && \
-  echo 'gcloud config set project $PROJECT_ID' >> /root/.bashrc
+  echo 'export GOOGLE_PROJECT_ID=$(gcloud config get-value account | cut -d "@" -f 2 | cut -d "." -f 1)' >> /root/.bashrc && \
+  echo 'gcloud config set project $GOOGLE_PROJECT_ID' >> /root/.bashrc
 
 # ポート解放
 EXPOSE 8000

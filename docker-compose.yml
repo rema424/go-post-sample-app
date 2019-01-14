@@ -16,6 +16,7 @@ services:
     volumes:
       - go-post-volume:/go/src/app
       - ./gcloud/service-account-key.json:/tmp/service-account-key.json
+      - ./.circleci:/go/.circleci
     environment:
       TZ: Asia/Tokyo
     ports:

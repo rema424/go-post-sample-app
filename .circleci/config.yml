@@ -1,0 +1,75 @@
+version: 2.1
+
+orbs:
+  gcp-cli: circleci/gcp-cli@1.0.3
+
+executors:
+  golang:
+    working_directory: /go
+    docker:
+      - image: circleci/golang:1.11
+  gcloud:
+    working_directory: ~
+    docker:
+      - image: google/cloud-sdk:latest
+
+commands:
+  give_execute_permission_to_appcfg:
+    steps:
+      - run:
+          name: appcfg.pyに実行権限を付与
+          command: |
+            chmod +x /usr/lib/google-cloud-sdk/platform/google_appengine/appcfg.py
+            chmod +x /usr/lib/google-cloud-sdk/platform/google_appengine/goapp
+  install_make_command:
+    steps:
+      - run:
+          name: makeコマンドをインストール
+          command: apt-get install build-essential -y
+  install_go:
+    steps:
+      - run:
+          name: goをインストール
+          command: |
+            curl -O https://dl.google.com/go/go1.11.4.linux-amd64.tar.gz
+            tar -C /usr/local -xzf go1.11.4.linux-amd64.tar.gz
+            rm -rf go1.11.4.linux-amd64.tar.gz
+  install_dependencies:
+    steps:
+      - run:
+          name: depで依存モジュールをインストール
+          working_directory: ~/project/src/app
+          command: |
+            export GOPATH=~/project
+            export PATH=$PATH:/usr/local/go/bin:$GOPATH/bin
+            go get -u -v github.com/golang/dep/cmd/dep
+            dep ensure -v
+
+jobs:
+  deploy:
+    executor: gcloud
+    working_directory: ~
+    steps:
+      - checkout
+      - gcp-cli/initialize
+      - give_execute_permission_to_appcfg
+      - install_make_command
+      - install_go
+      - install_dependencies
+      - run:
+          name: デプロイの実施
+          working_directory: ~/project/src/app
+          command: |
+            echo $PWD
+            export GOPATH=~/project
+            export PATH=$PATH:/usr/lib/google-cloud-sdk/platform/google_appengine
+            make update version=$CIRCLE_SHA1
+            make migrate version=$CIRCLE_SHA1
+
+workflows:
+  deploy_to_production:
+    jobs:
+      - deploy:
+          filters:
+            branches:
+              only: master
