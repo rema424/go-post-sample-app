@@ -9,6 +9,7 @@ executors:
     docker:
       - image: circleci/golang:1.11
   gcloud:
+    working_directory: ~
     docker:
       - image: google/cloud-sdk:latest
     environment:
