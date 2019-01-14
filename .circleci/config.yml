@@ -72,4 +72,4 @@ workflows:
       - deploy:
           filters:
             branches:
-              only: '#38'
+              only: master
