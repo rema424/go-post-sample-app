@@ -12,8 +12,6 @@ executors:
     working_directory: ~
     docker:
       - image: google/cloud-sdk:latest
-    environment:
-      PATH: $PATH:/usr/lib/google-cloud-sdk/platform/google_appengine
 
 commands:
   give_execute_permission_to_appcfg:
@@ -31,6 +29,8 @@ jobs:
   deploy:
     executor: gcloud
     working_directory: ~
+    environment:
+      PATH: $PATH:/usr/lib/google-cloud-sdk/platform/google_appengine
     steps:
       - checkout
       - gcp-cli/initialize
