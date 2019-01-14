@@ -14,7 +14,7 @@ executors:
       - image: google/cloud-sdk:latest
 
 commands:
-  give_execute_permission:
+  give_execute_permission_to_appcfg.py:
     steps:
       - run: chmod +x /usr/lib/google-cloud-sdk/platform/google_appengine/appcfg.py
 
@@ -26,16 +26,13 @@ jobs:
       FOO: bar
     steps:
       - checkout
-      - give_execute_permission
+      - gcp-cli/initialize
+      - give_execute_permission_to_appcfg.py
       - run:
           name: デプロイの実施
-          # working_directory: ~/
+          working_directory: ~/project/src/app
           command: |
             echo $PWD
-            echo $GCLOUD_SERVICE_KEY
-            echo $GOOGLE_PROJECT_ID
-            echo $GOOGLE_COMPUTE_ZONE
-      - gcp-cli/initialize
 
 workflows:
   deploy_to_production:
