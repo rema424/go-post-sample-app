@@ -14,7 +14,7 @@ executors:
       - image: google/cloud-sdk:latest
 
 commands:
-  give_execute_permission_to_appcfg.py:
+  give_execute_permission_to_appcfg:
     steps:
       - run: chmod +x /usr/lib/google-cloud-sdk/platform/google_appengine/appcfg.py
 
@@ -27,7 +27,7 @@ jobs:
     steps:
       - checkout
       - gcp-cli/initialize
-      - give_execute_permission_to_appcfg.py
+      - give_execute_permission_to_appcfg
       - run:
           name: デプロイの実施
           working_directory: ~/project/src/app
