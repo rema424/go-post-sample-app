@@ -26,12 +26,16 @@ jobs:
       FOO: bar
     steps:
       - checkout
-      - gcp-cli/initialize
+      # - gcp-cli/initialize
       - give_execute_permission
       - run:
           name: デプロイの実施
           # working_directory: ~/
-          command: echo $PWD
+          command: |
+            echo $PWD
+            echo $GCLOUD_SERVICE_KEY
+            echo $GOOGLE_PROJECT_ID
+            echo $GOOGLE_COMPUTE_ZONE
 
 workflows:
   deploy_to_production:
