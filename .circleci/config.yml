@@ -9,18 +9,17 @@ executors:
     docker:
       - image: circleci/golang:1.11
   gcloud:
-    working_directory: /go
     docker:
       - image: google/cloud-sdk:latest
+    environment:
+      PATH: $PATH:/usr/lib/google-cloud-sdk/platform/google_appengine
 
 commands:
   give_execute_permission_to_appcfg:
     steps:
       - run:
           name: appcfg.pyに実行権限を付与
-          command: |
-            chmod +x /usr/lib/google-cloud-sdk/platform/google_appengine/appcfg.py
-            PATH=$PATH:/usr/lib/google-cloud-sdk/platform/google_appengine
+          command: chmod +x /usr/lib/google-cloud-sdk/platform/google_appengine/appcfg.py
   install_make_command:
     steps:
       - run:
@@ -31,8 +30,6 @@ jobs:
   deploy:
     executor: gcloud
     working_directory: ~
-    environment:
-      FOO: bar
     steps:
       - checkout
       - gcp-cli/initialize
