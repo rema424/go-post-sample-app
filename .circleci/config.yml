@@ -19,6 +19,7 @@ commands:
       - run:
           name: appcfg.pyに実行権限を付与
           command: chmod +x /usr/lib/google-cloud-sdk/platform/google_appengine/appcfg.py
+          command: chmod +x /usr/lib/google-cloud-sdk/platform/google_appengine/goapp
   install_make_command:
     steps:
       - run:
@@ -59,7 +60,8 @@ jobs:
           working_directory: ~/project/src/app
           command: |
             echo $PWD
-            PATH=$PATH:/usr/lib/google-cloud-sdk/platform/google_appengine
+            export GOPATH=~/project
+            export PATH=$PATH:/usr/lib/google-cloud-sdk/platform/google_appengine
             make update version=$CIRCLE_SHA1
             make migrate version=$CIRCLE_SHA1
 
