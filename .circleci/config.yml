@@ -18,8 +18,9 @@ commands:
     steps:
       - run:
           name: appcfg.pyに実行権限を付与
-          command: chmod +x /usr/lib/google-cloud-sdk/platform/google_appengine/appcfg.py
-          command: chmod +x /usr/lib/google-cloud-sdk/platform/google_appengine/goapp
+          command: |
+            chmod +x /usr/lib/google-cloud-sdk/platform/google_appengine/appcfg.py
+            chmod +x /usr/lib/google-cloud-sdk/platform/google_appengine/goapp
   install_make_command:
     steps:
       - run:
