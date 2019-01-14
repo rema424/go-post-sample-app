@@ -16,7 +16,9 @@ executors:
 commands:
   give_execute_permission_to_appcfg:
     steps:
-      - run: chmod +x /usr/lib/google-cloud-sdk/platform/google_appengine/appcfg.py
+      - run:
+          name: appcfg.pyに実行権限を付与
+          command: chmod +x /usr/lib/google-cloud-sdk/platform/google_appengine/appcfg.py
 
 jobs:
   deploy:
@@ -33,6 +35,8 @@ jobs:
           working_directory: ~/project/src/app
           command: |
             echo $PWD
+            make update version=$CIRCLE_SHA1
+            make migrate version=$CIRCLE_SHA1
 
 workflows:
   deploy_to_production:
