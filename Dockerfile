@@ -22,6 +22,8 @@ WORKDIR /go/src/app
 
 RUN chmod +x /usr/lib/google-cloud-sdk/platform/google_appengine/goapp && \
   chmod +x /usr/lib/google-cloud-sdk/platform/google_appengine/appcfg.py && \
+  bash -c "$(curl -fSl https://raw.githubusercontent.com/CircleCI-Public/circleci-cli/master/install.sh)" && \
+  circleci update && \
   # curl -sL https://deb.nodesource.com/setup_10.x | bash - && \
   # apt-get install -y nodejs && \
   # go get -u -v github.com/golang/dep/cmd/dep && \

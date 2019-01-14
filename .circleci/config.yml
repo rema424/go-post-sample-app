@@ -1,0 +1,42 @@
+version: 2.1
+
+orbs:
+  gcp-cli: circleci/gcp-cli@1.0.3
+
+executors:
+  golang:
+    working_directory: /go
+    docker:
+      - image: circleci/golang:1.11
+  gcloud:
+    working_directory: /go
+    docker:
+      - image: google/cloud-sdk:latest
+
+commands:
+  give_execute_permission:
+    steps:
+      - run: chmod +x /usr/lib/google-cloud-sdk/platform/google_appengine/appcfg.py
+
+jobs:
+  deploy:
+    executor: gcloud
+    working_directory: ~
+    environment:
+      FOO: bar
+    steps:
+      - checkout
+      - gcp-cli/initialize
+      - give_execute_permission
+      - run:
+          name: デプロイの実施
+          # working_directory: ~/
+          command: echo $PWD
+
+workflows:
+  deploy_to_production:
+    jobs:
+      - deploy:
+          filters:
+            branches:
+              only: '#38'
