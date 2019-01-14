@@ -29,8 +29,8 @@ jobs:
   deploy:
     executor: gcloud
     working_directory: ~
-    environment:
-      PATH: $PATH:/usr/lib/google-cloud-sdk/platform/google_appengine
+    # environment:
+    #   PATH: $PATH:/usr/lib/google-cloud-sdk/platform/google_appengine
     steps:
       - checkout
       - gcp-cli/initialize
@@ -41,6 +41,7 @@ jobs:
           working_directory: ~/project/src/app
           command: |
             echo $PWD
+            PATH=$PATH:/usr/lib/google-cloud-sdk/platform/google_appengine
             make update version=$CIRCLE_SHA1
             make migrate version=$CIRCLE_SHA1
 
