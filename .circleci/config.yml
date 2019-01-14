@@ -26,7 +26,6 @@ jobs:
       FOO: bar
     steps:
       - checkout
-      # - gcp-cli/initialize
       - give_execute_permission
       - run:
           name: デプロイの実施
@@ -36,6 +35,7 @@ jobs:
             echo $GCLOUD_SERVICE_KEY
             echo $GOOGLE_PROJECT_ID
             echo $GOOGLE_COMPUTE_ZONE
+      - gcp-cli/initialize
 
 workflows:
   deploy_to_production:
