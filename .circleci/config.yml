@@ -29,8 +29,6 @@ jobs:
   deploy:
     executor: gcloud
     working_directory: ~
-    # environment:
-    #   PATH: $PATH:/usr/lib/google-cloud-sdk/platform/google_appengine
     steps:
       - checkout
       - gcp-cli/initialize

@@ -1,7 +1,7 @@
 .PHONY: all
 
 # コマンドライン引数で渡ってきたらその値で上書きする
-project_id := ${PROJECT_ID}
+project_id := ${GOOGLE_PROJECT_ID}
 version := ${GAE_VERSION}
 
 # シェルコマンドの実行結果を代入する時は$でエスケープする
