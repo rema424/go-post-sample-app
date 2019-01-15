@@ -11,7 +11,7 @@ import (
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
 
-	"app/handler"
+	"app/service/handler"
 )
 
 // reference our echo instance and create it early
@@ -38,7 +38,7 @@ func init() {
 	e.Use(middleware.CORS())
 
 	// Static assets
-	e.Static("/static", "../asset")
+	e.Static("/static", "asset")
 
 	// Templates
 	templates := make(map[string]*template.Template)
@@ -81,7 +81,7 @@ func (tr *TemplateRegistry) Render(w io.Writer, name string, data interface{}, c
 func registerTemplate(filenames ...string) *template.Template {
 	var files []string
 	for _, value := range filenames {
-		files = append(files, fmt.Sprintf("../template/%s.html", value))
+		files = append(files, fmt.Sprintf("template/%s.html", value))
 	}
 
 	// Templateで使用する関数を登録する
