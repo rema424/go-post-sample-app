@@ -25,3 +25,4 @@ service-account-key.json
 index.yaml
 .docker-sync
 cloudsql-key-config.json
+src/app/main/main
