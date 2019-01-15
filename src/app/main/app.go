@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"html/template"
 	"io"
+	"net/http"
 	"reflect"
 	"strings"
 
@@ -36,6 +37,9 @@ func init() {
 		Format: "method=${method}, uri=${uri}, status=${status}\n",
 	}))
 	e.Use(middleware.CORS())
+	e.Use(middleware.RemoveTrailingSlashWithConfig(middleware.TrailingSlashConfig{
+		RedirectCode: http.StatusMovedPermanently,
+	}))
 
 	// Static assets
 	e.Static("/static", "asset")
