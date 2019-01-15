@@ -11,7 +11,7 @@ import (
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
 
-	"app/service/handler"
+	"app/handler"
 )
 
 // reference our echo instance and create it early
