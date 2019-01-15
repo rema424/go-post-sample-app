@@ -31,9 +31,6 @@ type TemplateRegistry struct {
 // -----------
 
 func init() {
-	// Debug mode
-	e.Debug = true
-
 	// Middleware
 	e.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
 		Format: "method=${method}, uri=${uri}, status=${status}\n",
