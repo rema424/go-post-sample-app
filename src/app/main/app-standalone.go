@@ -12,6 +12,9 @@ func createMux() *echo.Echo {
 	e.Use(middleware.Recover())
 	e.Use(middleware.Gzip())
 
+	// Debug mode
+	e.Debug = true
+
 	return e
 }
 
