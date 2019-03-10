@@ -1,38 +1,51 @@
-version: '3'
+version: "3"
 
-volumes:
-  cloudsql:
-  go-post-volume:
-    external: true
+# volumes:
+#   cloudsql:
+#   go-post-volume:
+#     external: true
 
 services:
-  app:
-    build: .
-    working_dir: /go/src/app
-    command: bash --login
-    # command: dev_appserver.py app.yaml --host 0.0.0.0
-    # command: go build && ./main
-    # command: dlv debug --headless --listen=:2345 --api-version=2
-    volumes:
-      - go-post-volume:/go/src/app
-      - ./gcloud/service-account-key.json:/tmp/service-account-key.json
-      - ./.circleci:/go/.circleci
-    environment:
-      TZ: Asia/Tokyo
-    ports:
-      - 8080:8080 # AppEngine default
-      - 2345:2345 # Debug
-    tty: true
-    privileged: true
+  # app:
+  #   build: .
+  #   working_dir: /go/src/app
+  #   command: bash --login
+  #   # command: dev_appserver.py app.yaml --host 0.0.0.0
+  #   # command: go build && ./main
+  #   # command: dlv debug --headless --listen=:2345 --api-version=2
+  #   volumes:
+  #     - go-post-volume:/go/src/app
+  #     - ./gcloud/service-account-key.json:/tmp/service-account-key.json
+  #     - ./.circleci:/go/.circleci
+  #   environment:
+  #     TZ: Asia/Tokyo
+  #   ports:
+  #     - 8080:8080 # AppEngine default
+  #     - 2345:2345 # Debug
+  #   tty: true
+  #   privileged: true
+  # db:
+  #   image: gcr.io/cloudsql-docker/gce-proxy:1.12
+  #   volumes:
+  #     - ./cloudsql/cloudsql-key-config.json:/config/cloudsql-key-config.json
+  #     - cloudsql:/cloudsql
+  #   command: [
+  #     "/cloud_sql_proxy",
+  #     "-instances=go-post-sample-app:asia-northeast1:go-post-cloudsql-dev=tcp:0.0.0.0:3306",
+  #     "-credential_file=/config/cloudsql-key-config.json"
+  #   ]
+  #   ports:
+  #     - 127.0.0.1:3306:3306
   db:
-    image: gcr.io/cloudsql-docker/gce-proxy:1.12
-    volumes:
-      - ./cloudsql/cloudsql-key-config.json:/config/cloudsql-key-config.json
-      - cloudsql:/cloudsql
-    command: [
-      "/cloud_sql_proxy",
-      "-instances=go-post-sample-app:asia-northeast1:go-post-cloudsql-dev=tcp:0.0.0.0:3306",
-      "-credential_file=/config/cloudsql-key-config.json"
-    ]
+    image: mysql:5.7
     ports:
-      - 127.0.0.1:3306:3306
+      - 3306:3306
+    # volumes:
+    #   - mydata:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: RootPassw0rd
+      MYSQL_DATABASE: testdb
+      MYSQL_USER: testuser
+      MYSQL_PASSWORD: Passw0rd
+      TZ: Asia/Tokyo
+    tty: true

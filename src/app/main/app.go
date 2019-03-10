@@ -9,9 +9,12 @@ import (
 	"reflect"
 	"strings"
 
+	"github.com/jinzhu/gorm"
+	_ "github.com/jinzhu/gorm/dialects/mysql"
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
 
+	"app/entity"
 	"app/handler"
 )
 
@@ -32,6 +35,11 @@ type TemplateRegistry struct {
 // -----------
 
 func init() {
+	db := gormConnect()
+	defer db.Close()
+
+	db.AutoMigrate(&entity.User{})
+
 	// Middleware
 	e.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
 		Format: "method=${method}, uri=${uri}, status=${status}\n",
@@ -46,20 +54,28 @@ func init() {
 
 	// Templates
 	templates := make(map[string]*template.Template)
+	// static_apges
 	templates["home"] = registerTemplate("layout", "pages/static/home")
 	templates["help"] = registerTemplate("layout", "pages/static/help")
 	templates["about"] = registerTemplate("layout", "pages/static/about")
 	templates["contact"] = registerTemplate("layout", "pages/static/contact")
+	// users
+	templates["users/new"] = registerTemplate("layout", "pages/users/new")
+
 	templates["howdy"] = registerTemplate("layout", "howdy")
 
 	// Renerer
 	e.Renderer = &TemplateRegistry{Templates: templates}
 
 	// Route => handler
+	// static_pages
 	e.GET("/", handler.HomeHandler)
 	e.GET("/help", handler.HelpHandler)
 	e.GET("/about", handler.AboutHandler)
 	e.GET("/contact", handler.ContactHandler)
+	// users
+	e.GET("/signup", handler.UsersNewHandler)
+
 	e.GET("/howdy", handler.HowdyHandler)
 	e.GET("/:message", handler.ParrotHandler)
 }
@@ -180,4 +196,20 @@ func DebugPrintReflectArrayOrSlice(rv reflect.Value) (str string) {
 		str = fmt.Sprint(rv.Interface())
 	}
 	return
+}
+
+func gormConnect() *gorm.DB {
+	// DBMS := "mysql"
+	// USER := "testuser"
+	// PASS := "Passw0rd"
+	// PROTOCOL := "tcp(127.0.0.1:3306)"
+	// DBNAME := "testdb"
+
+	// CONNECT := fmt.Sprintf("%s:%s@%s/%s", USER, PASS, PROTOCOL, DBNAME)
+	db, err := gorm.Open("mysql", "testuser:Passw0rd@tcp(0.0.0.0:3306)/testdb?charset=utf8&parseTime=True&loc=Local")
+
+	if err != nil {
+		panic(err.Error())
+	}
+	return db
 }
