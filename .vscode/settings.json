@@ -1,7 +1,7 @@
 {
   "go.gopath": "${workspaceFolder}",
   "go.formatTool": "gofmt",
-  "prettier.disableLanguages": ["vue", "html"],
+  "prettier.disableLanguages": ["vue"],
   "material-icon-theme.folders.associations": {
     "handler": "Routes",
     "usecase": "Functions",
@@ -13,5 +13,10 @@
     "gcloud": "Docker",
     "main": "Serverless"
   },
-  "go.goroot": "/usr/local/go"
+  "go.goroot": "/usr/local/go",
+  "editor.tabSize": 2,
+  "editor.formatOnPaste": true,
+  "editor.formatOnSave": true,
+  "editor.formatOnType": true,
+  "html.format.indentInnerHtml": true
 }

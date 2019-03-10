@@ -46,14 +46,20 @@ func init() {
 
 	// Templates
 	templates := make(map[string]*template.Template)
-	templates["hello"] = registerTemplate("layout", "hello")
+	templates["home"] = registerTemplate("layout", "pages/static/home")
+	templates["help"] = registerTemplate("layout", "pages/static/help")
+	templates["about"] = registerTemplate("layout", "pages/static/about")
+	templates["contact"] = registerTemplate("layout", "pages/static/contact")
 	templates["howdy"] = registerTemplate("layout", "howdy")
 
 	// Renerer
 	e.Renderer = &TemplateRegistry{Templates: templates}
 
 	// Route => handler
-	e.GET("/", handler.HelloHandler)
+	e.GET("/", handler.HomeHandler)
+	e.GET("/help", handler.HelpHandler)
+	e.GET("/about", handler.AboutHandler)
+	e.GET("/contact", handler.ContactHandler)
 	e.GET("/howdy", handler.HowdyHandler)
 	e.GET("/:message", handler.ParrotHandler)
 }
